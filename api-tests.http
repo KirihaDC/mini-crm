@@ -1,0 +1,49 @@
+@baseUrl = http://localhost:3000
+
+### AUTH
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@test.com",
+  "password": "12345678"
+}
+
+###
+@token = {{login.response.body.accessToken}}
+
+### CUSTOMERS
+GET {{baseUrl}}/customers
+Authorization: Bearer {{token}}
+
+### CREATE CUSTOMER
+POST {{baseUrl}}/customers
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nombre": "Cliente Ejemplo",
+  "email": "cliente@ejemplo.com",
+  "direccion": "Calle Falsa 123",
+  "documentoFiscal": "ABC123456"
+}
+
+### ORDERS
+GET {{baseUrl}}/orders?status=CREADA
+Authorization: Bearer {{token}}
+
+### CREATE ORDER
+POST {{baseUrl}}/orders/customer/ID_AQUI
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "folio": "F-2024-001",
+  "monto": 1500.50,
+  "moneda": "MXN",
+  "notasInternas": "Nota secreta encriptada"
+}
+
+### SWAGGER DOCS
+GET {{baseUrl}}/docs
